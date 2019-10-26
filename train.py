@@ -13,6 +13,8 @@ seed(1)
 from tensorflow import set_random_seed
 set_random_seed(2)
 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 
 batch_size = 32
 

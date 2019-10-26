@@ -3,6 +3,7 @@ import numpy as np
 import os,glob,cv2
 import sys,argparse
 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 # First, pass the path of the image
 dir_path = os.path.dirname(os.path.realpath(__file__))
