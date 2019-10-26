@@ -36,7 +36,7 @@ print("Number of files in Validation-set:\t{}".format(len(data.valid.labels)))
 
 
 
-session = tf.Session()
+session = tf.compat.v1.Session()
 x = tf.compat.v1.placeholder(tf.float32, shape=[None, img_size,img_size,num_channels], name='x')
 
 ## labels
@@ -84,7 +84,7 @@ def create_convolutional_layer(input,
     layer += biases
 
     ## We shall be using max-pooling.  
-    layer = tf.nn.max_pool2d(value=layer,
+    layer = tf.nn.max_pool(value=layer,
                             ksize=[1, 2, 2, 1],
                             strides=[1, 2, 2, 1],
                             padding='SAME')
