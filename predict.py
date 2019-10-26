@@ -23,14 +23,14 @@ images = np.multiply(images, 1.0/255.0)
 x_batch = images.reshape(1, image_size,image_size,num_channels)
 
 ## Let us restore the saved model 
-sess = tf.Session()
+sess = tf.compat.v1.Session()
 # Step-1: Recreate the network graph. At this step only graph is created.
-saver = tf.train.import_meta_graph('traffic-model.meta')
+saver = tf.compat.v1.train.import_meta_graph('traffic-model.meta')
 # Step-2: Now let's load the weights saved using the restore method.
 saver.restore(sess, tf.train.latest_checkpoint('./'))
 
 # Accessing the default graph which we have restored
-graph = tf.get_default_graph()
+graph = tf.compat.v1.get_default_graph()
 
 # Now, let's get hold of the op that we can be processed to get the output.
 # In the original network y_pred is the tensor that is the prediction of the network

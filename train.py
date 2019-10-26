@@ -37,10 +37,10 @@ print("Number of files in Validation-set:\t{}".format(len(data.valid.labels)))
 
 
 session = tf.Session()
-x = tf.placeholder(tf.float32, shape=[None, img_size,img_size,num_channels], name='x')
+x = tf.compat.v1.placeholder(tf.float32, shape=[None, img_size,img_size,num_channels], name='x')
 
 ## labels
-y_true = tf.placeholder(tf.float32, shape=[None, num_classes], name='y_true')
+y_true = tf.compat.v1.placeholder(tf.float32, shape=[None, num_classes], name='y_true')
 y_true_cls = tf.argmax(y_true, dimension=1)
 
 
@@ -58,7 +58,7 @@ num_filters_conv3 = 64
 fc_layer_size = 128
 
 def create_weights(shape):
-    return tf.Variable(tf.truncated_normal(shape, stddev=0.05))
+    return tf.Variable(tf.random.truncated_normal(shape, stddev=0.05))
 
 def create_biases(size):
     return tf.Variable(tf.constant(0.05, shape=[size]))
@@ -84,7 +84,7 @@ def create_convolutional_layer(input,
     layer += biases
 
     ## We shall be using max-pooling.  
-    layer = tf.nn.max_pool(value=layer,
+    layer = tf.nn.max_pool2d(value=layer,
                             ksize=[1, 2, 2, 1],
                             strides=[1, 2, 2, 1],
                             padding='SAME')
@@ -155,11 +155,11 @@ layer_fc2 = create_fc_layer(input=layer_fc1,
 y_pred = tf.nn.softmax(layer_fc2,name='y_pred')
 
 y_pred_cls = tf.argmax(y_pred, dimension=1)
-session.run(tf.global_variables_initializer())
+session.run(tf.compat.v1.global_variables_initializer())
 cross_entropy = tf.nn.softmax_cross_entropy_with_logits(logits=layer_fc2,
                                                     labels=y_true)
 cost = tf.reduce_mean(cross_entropy)
-optimizer = tf.train.AdamOptimizer(learning_rate=1e-4).minimize(cost)
+optimizer = tf.compat.v1.train.AdamOptimizer(learning_rate=1e-4).minimize(cost)
 correct_prediction = tf.equal(y_pred_cls, y_true_cls)
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
@@ -175,7 +175,7 @@ def show_progress(epoch, feed_dict_train, feed_dict_validate, val_loss):
 
 total_iterations = 0
 
-saver = tf.train.Saver()
+saver = tf.compat.v1.train.Saver()
 def train(num_iteration):
     global total_iterations
     
